@@ -1,5 +1,6 @@
 class Figure:
     sides_count = 0
+    valid_sides = 0
     is_cube = False
 
     def __init__(self, color, *sides, filled=False):
@@ -40,7 +41,7 @@ class Figure:
             if i <= 0:
                 return False
 
-        if len(new_sides) != self.sides_count:
+        if len(new_sides) != self.valid_sides:
             return False
         else:
             return True
@@ -49,7 +50,12 @@ class Figure:
         new_sides = sides
         validation = self.__is_valid_sides(new_sides)
         if validation:
-            self.__sides = list(sides)
+            if self.is_cube:
+                self.__sides = []
+                for i in range(self.sides_count):
+                    self.__sides.append(*new_sides)
+            else:
+                self.__sides = list(sides)
 
     def get_sides(self):
         return self.__sides
@@ -61,6 +67,7 @@ class Figure:
 
 class Circle(Figure):
     sides_count = 1
+    valid_sides = sides_count
 
     def __init__(self, color, *sides):
         super().__init__(color, *sides)
@@ -73,6 +80,7 @@ class Circle(Figure):
 
 class Triangle(Figure):
     sides_count = 3
+    valid_sides = sides_count
 
     def __init__(self, color, *sides):
         super().__init__(color, *sides)
@@ -90,6 +98,7 @@ class Triangle(Figure):
 class Cube(Figure):
     sides_count = 12
     is_cube = True
+    valid_sides = 1
 
     def __init__(self, color, *sides):
         super().__init__(color, *sides)
